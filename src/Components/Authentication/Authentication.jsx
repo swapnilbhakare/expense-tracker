@@ -4,7 +4,10 @@ import { BiSolidLockAlt } from "react-icons/bi";
 import stylesheet from "./Authentication.module.css";
 import { Col, Row, Button, Form } from "react-bootstrap";
 import AuthContext from "../../Store/AuthContext";
+import { useNavigate } from "react-router-dom";
 const Authentication = (props) => {
+  const navigate = useNavigate();
+
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const confirmPasswordInputRef = useRef();
@@ -20,11 +23,12 @@ const Authentication = (props) => {
 
     const enterdEmail = emailInputRef.current.value;
     const enterdPassword = passwordInputRef.current.value;
-    const enterdConfirmPassword = confirmPasswordInputRef.current.value;
+    const enterdConfirmPassword = !isLogin? confirmPasswordInputRef.current.value:null
     let errorMessage;
 
     let url;
     if (!isLogin && enterdPassword !== enterdConfirmPassword) {
+      console.log(enterdPassword,enterdConfirmPassword)
       alert("password didn't match");
       return;
     }
@@ -54,14 +58,50 @@ const Authentication = (props) => {
           return res.json();
         } else {
           return res.json().then((data) => {
-            errorMessage = "Authentication Failed !";
+            if(isLogin){
+              if(data.error.message==="EMAIL_NOT_FOUND"){
+                errorMessage="User not found."
+              }else if(data.error.message==="INVALID_PASSWORD"){
+                errorMessage ="Invalid password."
+              }else{
+                errorMessage="Login Failed!"
+              }
+            }
+            else{
+              if(data.error.message==="EMAIL_EXISTS"){
+                  errorMessage="User already exists."
+              }else{
+                errorMessage="Sign-up Failed!"
+              }
+            }
+           
             throw new Error(errorMessage);
           });
         }
       })
+
       .then((data) => {
-        console.log("User has successfully signed up");
-        authcontext.login(data.idToken);
+        if(errorMessage){
+          alert(errorMessage)
+        }else{
+          if(isLogin){
+            navigate('/home')
+            console.log("User has successfully signed in")
+          }else{
+            navigate('/home')
+            console.log("User has successfully signed up")
+          }
+          
+          authcontext.login(data.idToken);
+          if(!isLogin){
+            confirmPasswordInputRef.current.value=""
+          }
+          emailInputRef.current.value=""
+          passwordInputRef.current.value=""
+        }
+        
+        
+       
       })
       .catch((err) => {
         alert(err.message);
@@ -72,7 +112,8 @@ const Authentication = (props) => {
     <>
       <Form
         onSubmit={submitHandler}
-        className={`${stylesheet["auth-root"]}`}
+        
+        className={`${isLogin?stylesheet['auth-root-login']:stylesheet["auth-root"]}`}
         breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
         minBreakpoint="xxs"
       >
@@ -80,7 +121,7 @@ const Authentication = (props) => {
           <Col>
             <h2 className={stylesheet.heading}>
               <BiSolidLockAlt className={stylesheet.lock} />
-              {isLogin ? "Login" : "Sign Up"}
+              {isLogin ? "Log In" : "Sign Up"}
             </h2>
           </Col>
           <Form.Group
@@ -138,7 +179,7 @@ const Authentication = (props) => {
 
           <Form.Group as={Col} className={`${stylesheet["form-group"]}`}>
             <Button type="submit" className={stylesheet.btn}>
-              {isLogin ? "Login" : "Sign Up"}
+              {isLogin ? "Log In" : "Sign Up"}
             </Button>
           </Form.Group>
         </Row>

@@ -7,6 +7,21 @@
     box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
     padding: 5px 20px;
     border-radius: 4px;
+    /* transition: 0.3s; */
+
+}
+.auth-root-login{
+    background: #fff;
+    width: 300px;
+    height: 300px;
+    margin: 80px auto 0;
+    box-sizing: border-box;
+    box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
+    padding: 5px 20px;
+    border-radius: 4px;
+    /* transition: 0.3s; */
+
+
 }
 
 .form-group {
