@@ -79,7 +79,6 @@ const Authentication = (props) => {
           });
         }
       })
-
       .then((data) => {
         if(errorMessage){
           alert(errorMessage)
