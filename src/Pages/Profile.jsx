@@ -41,7 +41,7 @@ const Profile = (props) => {
       })
       .then((data) => {
         setFullName(data.users[0].displayName);
-        SetProfileUrl(data.users[0].displayName);
+        SetProfileUrl(data.users[0].photoUrl);
       })
       .catch((error) => {
         alert(error.message);
@@ -120,7 +120,6 @@ const Profile = (props) => {
 
             />
           </Form.Group>
-
           <Form.Group controlId="formBasicProfileURL">
             <Form.Label>Profile Photo URL</Form.Label>
             <Form.Control
