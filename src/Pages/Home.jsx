@@ -1,8 +1,11 @@
 import React from 'react'
+import Header from '../Components/Layout/Header'
 
 const Home = (props) => {
   return (
-    <div>Welcome to Expense Tracker</div>
+    <div>
+      <Header/>
+    </div>
   )
 }
 
