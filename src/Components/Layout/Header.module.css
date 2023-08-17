@@ -1,0 +1,34 @@
+.navbar{
+ display: flex;  
+ align-items: center;
+ justify-content: space-around;
+ padding: 20px auto;
+ height: 60px;
+ box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
+   
+ 
+}
+.completeProfile{
+    color: turquoise;
+    text-decoration: none;
+    margin-left: 2px;
+}
+.logoutBtn{
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    
+}
+.logout-icon{
+    font-size: 1.5rem;
+    color: turquoise;
+
+}
+.logoutBtn span{
+    font-size: 11px;
+    color: turquoise;
+    
+}

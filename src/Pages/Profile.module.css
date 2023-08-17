@@ -1,0 +1,49 @@
+.profileContainer{
+    box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
+   margin: 20px auto;
+   padding: 20px 5px;
+   
+}
+.inputTxt{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.profile{
+    color: turquoise;
+    height: 200px;
+    margin: 30px auto;
+  
+
+}
+.updateBtn{
+    display: flex;
+    align-items: center;
+    margin: 20px auto;
+    
+    /* margin-right: rem; */
+    justify-content: center;
+
+   
+}
+.updateBtn button{
+    background-color: aquamarine;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: 0;
+    padding: 10px 40px;
+    color: #fff;
+    border-radius: 22px;
+    text-transform: uppercase;
+}
+.cancelbtn{
+    border: none;
+    border:1px solid rgb(255, 0, 0);
+    color: #000;
+    background-color: transparent;
+    padding: 8px 10px;
+    border-radius: 9px;
+    cursor: pointer;
+}

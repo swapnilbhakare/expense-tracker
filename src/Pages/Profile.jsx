@@ -3,7 +3,8 @@ import Header from "../Components/Layout/Header";
 import { Button, Container, Form } from "react-bootstrap";
 import AuthContext from "../Store/AuthContext";
 import { useNavigate } from "react-router-dom";
-
+import stylesheet from "./Profile.module.css";
+import { AiOutlineGithub, AiOutlineGlobal } from "react-icons/ai";
 const Profile = (props) => {
   const authcontext = useContext(AuthContext);
   const fullNameInputRef = useRef();
@@ -71,68 +72,90 @@ const Profile = (props) => {
           "Content-Type": "application/json",
         },
       }
-    ).then((res)=>{
-        if(res.ok){
-            setFullName(enterdFullName)
-            SetProfileUrl(enterdProfileUrl)
-            return res.json()
-        }else{
-            return res.json().then(data=>{
-                errorMessage ="Update Failed"
-                if(data && data.error && data.error.message){
-                    errorMessage= data.error.message
-                }
-                throw new Error(errorMessage)
-            })
+    )
+      .then((res) => {
+        if (res.ok) {
+          setFullName(enterdFullName);
+          SetProfileUrl(enterdProfileUrl);
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            errorMessage = "Update Failed";
+            if (data && data.error && data.error.message) {
+              errorMessage = data.error.message;
+            }
+            throw new Error(errorMessage);
+          });
         }
-    }).then((data)=>{
-        console.log(data)
-    }).catch(error=>{
-        alert(error.message)
-    })
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
   };
-  const fullNameInputChangeHandler =()=>{
-    setFullName(fullNameInputRef.current.value)
-  }
-  const profileUrlInputChangeHandler =()=>{
-    SetProfileUrl(profileUrlRef.current.value)
-  }
+  const fullNameInputChangeHandler = () => {
+    setFullName(fullNameInputRef.current.value);
+  };
+  const profileUrlInputChangeHandler = () => {
+    SetProfileUrl(profileUrlRef.current.value);
+  };
 
   return (
     <>
       <Header />
-      <Container>
-        <Form onSubmit={updateHandler}>
-          <header style={{ marginBottom: "15px" }}>
-            Update Details
-            <Button onClick={cancelHandler}>Cancel</Button>
-          </header>
-          <Form.Group controlId="formBasicFullName">
-            <Form.Label>Full Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter full Name"
-              ref={fullNameInputRef}
-              required
-              onChange={fullNameInputChangeHandler}
+      <Container className={stylesheet.profileContainer}>
+        <header style={{ marginBottom: "15px",display:'flex',justifyContent:"space-between" }}>
+          Update Details
+          <Button onClick={cancelHandler} className={stylesheet.cancelbtn}>Cancel</Button>
+        </header>
 
-              value={fullName}
-
-            />
-          </Form.Group>
-          <Form.Group controlId="formBasicProfileURL">
-            <Form.Label>Profile Photo URL</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Paste profile photo url here"
-              ref={profileUrlRef}
-              required
-              onChange={profileUrlInputChangeHandler}
-
-              value={prfileUrl}
-            />
-          </Form.Group>
-          <Button type="submit">Update</Button>
+        <Form onSubmit={updateHandler} className={stylesheet.profile}>
+          <Container style={{display:'flex', flexDirection:'column'}}>
+            <Container className={stylesheet.inputTxt}>
+              <Form.Group
+                controlId="formBasicFullName"
+                style={{ fontSize: "18px" }}
+              >
+                <Form.Label>
+                  {" "}
+                  <AiOutlineGithub style={{ color: "000" }} /> Name :
+                </Form.Label>
+                <Form.Control
+                  style={{ marginLeft: "10px" }}
+                  type="text"
+                  placeholder="Enter full Name"
+                  ref={fullNameInputRef}
+                  required
+                  onChange={fullNameInputChangeHandler}
+                  value={fullName}
+                />
+              </Form.Group>
+              <Form.Group
+                controlId="formBasicProfileURL"
+                style={{ marginLeft: "16px", fontSize: "18px" }}
+              >
+                <Form.Label>
+                  {" "}
+                  <AiOutlineGlobal style={{ color: "000" }} /> Profile Photo
+                  URL:
+                </Form.Label>
+                <Form.Control
+                  style={{ marginLeft: "10px" }}
+                  type="text"
+                  placeholder="Paste profile photo url here"
+                  ref={profileUrlRef}
+                  required
+                  onChange={profileUrlInputChangeHandler}
+                  value={prfileUrl}
+                />
+              </Form.Group>
+            </Container>
+            <Form.Group className={stylesheet.updateBtn}>
+              <Button type="submit">Update</Button>
+            </Form.Group>
+          </Container>
         </Form>
       </Container>
     </>
