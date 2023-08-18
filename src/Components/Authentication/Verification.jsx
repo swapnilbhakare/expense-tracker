@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Card, Form, Container, Button, Spinner } from "react-bootstrap";
 import styleSheet from "./Verification.module.css";
 import AuthContext from "../../Store/AuthContext";
@@ -8,11 +8,22 @@ const Verification = (props) => {
   const emailInputRef = useRef();
   const authcontext = useContext(AuthContext);
   const [email, setEmail] = useState("");
+  const [isEmailVerified,setIsEmailVerified]=useState(false)
+  const [isLoading,setIsLoading]=useState(false)
+
+
+  useEffect(()=>{
+    if(authcontext.emailVerified){
+      // setIsEmailVerified(true)
+      navigate('/home')
+    }
+  },[authcontext.emailVerified])
 
   const verificationHandler = (event) => {
     event.preventDefault();
     const enterdEmail = emailInputRef.current.value;
-   
+    setIsLoading(true)
+
     fetch(
       "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBG_zzX0vmA0rh-Ngs3iUqHr5rh6UIpfgM",
       {
@@ -26,19 +37,30 @@ const Verification = (props) => {
         },
       }
     ).then((res)=>{
+      setIsLoading(false)
       if(res.ok){
-        setEmail("")
+        setEmail('')
+        setIsEmailVerified(true)
         return res.json()
       }else{
         return res.json().then((data)=>{
           if(data.email===enterdEmail){
             navigate('/home')
           }
-          let errorMessage = "verification Failed!";
-          if(data && data.error && data.error.message){
-            errorMessage= data.error.message
+          if(data.error && data.error.message){
+            const errorMessage = data.error.message
+            if(errorMessage.includes("EMAIL_NOT_FOUND")){
+              throw new Error("Email not found. Please try again.")
+            }else if(errorMessage.includes("INVALID_EMAIL")){
+              throw new Error("Invalid email format. Please provide a valid email.")
+            }else if(errorMessage.includes("USER_DISABLED")){
+              throw new Error("This user account has been disabled. Contact support.")
+            }else{
+              throw new Error("Verification failed. Please try again later.")
+            }
+          }else{
+            throw new Error("Verification failed. Please try again later.")
           }
-          throw new Error(errorMessage)
         })
       }
     }).catch((error)=>{
@@ -47,6 +69,9 @@ const Verification = (props) => {
   };
   const emailInputChangeHandler=()=>{
     setEmail(emailInputRef.current.value)
+  }
+  if(isEmailVerified){
+    navigate('/home')
   }
   return (
     <Container
@@ -69,13 +94,18 @@ const Verification = (props) => {
                 value={email}
               />
             </Form.Group>
-            <Button type="submit" style={{ marginTop: "15px" }} className={styleSheet.btn}>
+            {
+              isLoading?(
+                <Button className={styleSheet.btn}>
+                <Spinner animation="border" size="sm" />
+                Verifying..
+              </Button>
+              ): <Button type="submit" style={{ marginTop: "15px" }} className={styleSheet.btn}>
               Verify
             </Button>
-            <Button className={styleSheet.btn}>
-              <Spinner animation="border" size="sm" />
-              Verifying..
-            </Button>
+            }
+           
+           
           </Form>
         </Card.Body>
       </Card>
