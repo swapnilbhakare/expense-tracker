@@ -6,6 +6,7 @@ import Authentication from './Components/Authentication/Authentication';
 import Home from './Pages/Home';
 import AuthContext from './Store/AuthContext';
 import Profile from './Pages/Profile';
+import Verification from './Components/Authentication/Verification';
 
 function App() {
   const authcontext = useContext(AuthContext)
@@ -17,6 +18,7 @@ function App() {
       {
         authcontext.isLoggedIn &&(
           <>
+          <Route path='/verification' element={<Verification/>} />
           <Route path='/home' element={<Home/>}/>
           <Route path='/profile' element={<Profile/>}/>
           </>

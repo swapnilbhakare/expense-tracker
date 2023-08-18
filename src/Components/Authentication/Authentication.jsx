@@ -84,7 +84,7 @@ const Authentication = (props) => {
           alert(errorMessage)
         }else{
           if(isLogin){
-            navigate('/home')
+            navigate('/verification')
             console.log("User has successfully signed in")
           }else{
             navigate('/home')

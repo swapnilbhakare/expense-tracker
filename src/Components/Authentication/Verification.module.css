@@ -1,0 +1,41 @@
+.card{
+    background: #fff;
+    box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
+   padding: 20px;
+   margin:20px auto
+}
+
+
+.btn{
+    border: none;
+    background-color: turquoise;
+    padding: 8px 20px;
+    /* width: 50%; */
+    margin: 0 auto;
+    border-radius: 20px;
+    color: #fff;
+    margin-top: 5px;
+    border: 1px solid turquoise;
+    transition: 0.3s;
+    /* text-transform: uppercase; */
+    cursor: pointer;
+
+
+}
+.btn:hover, .btn:active{
+    background-color: transparent;
+    border: 1px solid turquoise;
+    color: #000;
+    
+}
+.form-controls{
+    outline: none;
+    border: 0;
+    border-bottom: 2px solid turquoise;
+    margin-top: 5px;
+    padding: 5px 0 ;
+
+}
+.form-controls::placeholder{
+    color: lightgray;
+}

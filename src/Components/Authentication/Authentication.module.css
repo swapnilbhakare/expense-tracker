@@ -74,7 +74,6 @@
     transition: 0.3s;
     text-transform: uppercase;
     cursor: pointer;
-   
 
 
 }
@@ -86,7 +85,6 @@
 }
 .switchBtn{
     display: flex;
- 
     width: 300px;
     border: none;
     border: 1px solid turquoise;
