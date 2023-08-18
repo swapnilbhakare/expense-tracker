@@ -3,6 +3,8 @@ import { Card, Form, Container, Button, Spinner } from "react-bootstrap";
 import styleSheet from "./Verification.module.css";
 import AuthContext from "../../Store/AuthContext";
 import { useNavigate } from "react-router-dom";
+
+
 const Verification = (props) => {
   const navigate= useNavigate()
   const emailInputRef = useRef();
@@ -14,8 +16,8 @@ const Verification = (props) => {
 
   useEffect(()=>{
     if(authcontext.emailVerified){
-      // setIsEmailVerified(true)
-      navigate('/home')
+      setIsEmailVerified(true)
+      
     }
   },[authcontext.emailVerified])
 
@@ -41,12 +43,16 @@ const Verification = (props) => {
       if(res.ok){
         setEmail('')
         setIsEmailVerified(true)
+        navigate('/home')
         return res.json()
       }else{
         return res.json().then((data)=>{
-          if(data.email===enterdEmail){
+          console.log(data)
+          if(isEmailVerified && data.email===enterdEmail){
             navigate('/home')
+            console.log(data)
           }
+          
           if(data.error && data.error.message){
             const errorMessage = data.error.message
             if(errorMessage.includes("EMAIL_NOT_FOUND")){
@@ -70,7 +76,7 @@ const Verification = (props) => {
   const emailInputChangeHandler=()=>{
     setEmail(emailInputRef.current.value)
   }
-  if(isEmailVerified){
+  if(isEmailVerified && email===authcontext.email){
     navigate('/home')
   }
   return (
@@ -96,7 +102,7 @@ const Verification = (props) => {
             </Form.Group>
             {
               isLoading?(
-                <Button className={styleSheet.btn}>
+                <Button className={styleSheet.btn} style={{ marginTop: "15px" }}>
                 <Spinner animation="border" size="sm" />
                 Verifying..
               </Button>

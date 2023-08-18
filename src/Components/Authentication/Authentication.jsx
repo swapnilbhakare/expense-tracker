@@ -84,10 +84,11 @@ const Authentication = (props) => {
           alert(errorMessage)
         }else{
           if(isLogin){
-            navigate('/verification')
+            navigate('/home')
             console.log("User has successfully signed in")
           }else{
-            navigate('/home')
+           
+            navigate('/verification')
             console.log("User has successfully signed up")
           }
           
@@ -114,7 +115,7 @@ const Authentication = (props) => {
         
         className={`${isLogin?stylesheet['auth-root-login']:stylesheet["auth-root"]}`}
         breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
-        minBreakpoint="xxs"
+        minbreakpoint="xxs"
       >
         <Row xs={2} md={4} lg={6}>
           <Col>

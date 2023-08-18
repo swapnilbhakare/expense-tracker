@@ -11,7 +11,7 @@ export const AuthContextProvider = (props) => {
   const [token, setToken] = useState("");
   const [email, setEmail] = useState("");
   const [emailVerified,setEmailVerified]=useState(false)
-
+  
   const userIsloggedIn = !!token;
 
   useEffect(() => {
@@ -28,11 +28,17 @@ export const AuthContextProvider = (props) => {
     setEmailVerified(isEmailVerified)
     localStorage.setItem("email", email);
     localStorage.setItem("token", token);
+    localStorage.setItem("isEmailVerified",isEmailVerified)
+
   };
   const logoutHandler =()=>{
     setToken(null)
     setEmail(null)
     setEmailVerified(false)
+    localStorage.clear()
+    localStorage.removeItem("email");
+    localStorage.removeItem("token");
+    localStorage.removeItem("isEmailVerified")
 
   }
 
