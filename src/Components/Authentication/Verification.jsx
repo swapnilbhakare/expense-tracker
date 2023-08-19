@@ -47,7 +47,7 @@ const Verification = (props) => {
         return res.json()
       }else{
         return res.json().then((data)=>{
-          console.log(data)
+       
           if(isEmailVerified && data.email===enterdEmail){
             navigate('/home')
             console.log(data)

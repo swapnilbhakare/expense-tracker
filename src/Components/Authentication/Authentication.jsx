@@ -107,6 +107,11 @@ const Authentication = (props) => {
         alert(err.message);
       });
   };
+  const forgetPasswordHandler=()=>{
+    navigate('/forget')
+  }
+
+
 
   return (
     <>
@@ -181,8 +186,13 @@ const Authentication = (props) => {
             <Button type="submit" className={stylesheet.btn}>
               {isLogin ? "Log In" : "Sign Up"}
             </Button>
-          </Form.Group>
+          </Form.Group >
+          {isLogin &&<Form.Group as={Col} className={`${stylesheet["form-group"]}`}>
+            <Button onClick={forgetPasswordHandler} className={stylesheet.forgetBtn}> Forget Password ?</Button>
+          </Form.Group> }
+          
         </Row>
+        
       </Form>
       <Button
         onClick={switchAuthModeHandler}

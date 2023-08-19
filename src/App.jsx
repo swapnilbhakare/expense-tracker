@@ -7,7 +7,7 @@ import Home from './Pages/Home';
 import AuthContext from './Store/AuthContext';
 import Profile from './Pages/Profile';
 import Verification from './Components/Authentication/Verification';
-
+import ResetPassword from './Components/Authentication/ResetPassword'
 function App() {
   const authcontext = useContext(AuthContext)
   return (
@@ -27,7 +27,7 @@ function App() {
       }
       {!authcontext.isLoggedIn &&
        <Route path='/auth' element={<Authentication/>}/>}
-    
+    <Route path='forget' element={<ResetPassword/> } />
     
     
     </Routes>
