@@ -1,13 +1,24 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect, useContext } from "react";
 import stylesheet from "./AddExpense.module.css";
 import { Button, Container, Form } from "react-bootstrap";
-const AddExpense = ({onAddExpense}) => {
+import AuthContext from'../../Store/AuthContext'
+
+const AddExpense = () => {
+  const currencyInputRef = useRef()
    const amountInputRef =useRef()
    const descriptionInputRef =useRef()
    const categroyInputRef = useRef()
+
+   const [currency,setCurrency]= useState("")
    const [amount,setAmount]= useState("")
    const [description,setDescription]= useState("")
    const [category,setCategory]=useState("")
+
+   const authcontext = useContext(AuthContext)
+
+   const currencyInputChangeHandler =()=>{
+        setCurrency(currencyInputRef.current.value)
+   }
 
    const amountInputChangeHandler =()=>{
     setAmount(amountInputRef.current.value)
@@ -22,19 +33,57 @@ const AddExpense = ({onAddExpense}) => {
    }
 
 
-   const addExpenseHandler=(event)=>{
-    event.preventDefault();
-    const expenseData={
-      amount:amount,
-      description:description,
-      category:category,
-  
-    }
-    onAddExpense(expenseData)
-    setAmount("");
+const submitHandler=(event)=>{
+  event.preventDefault()
+  const expenseData={
+    currency,currency,
+    amount:amount,
+    description:description,
+    category:category
+  }
+  addExpenseHandler(expenseData)
+  setCurrency('')
+  setAmount("");
     setDescription("");
     setCategory("");
-  }
+}
+
+const email = authcontext.email.replace(/[^a-zA-Z0-9]/g, "");
+
+useEffect(()=>{
+fetch(
+`https://expenses-tracker-8f78a-default-rtdb.firebaseio.com/expenses${email}.json`,{
+ method:"POST",
+ body:JSON.stringify([])
+}
+)
+},[email])
+
+
+
+const addExpenseHandler=(expenseData)=>{
+
+fetch(`https://expenses-tracker-8f78a-default-rtdb.firebaseio.com/expenses${email}.json`,{
+method:"POST",
+body:JSON.stringify(expenseData),
+headers: {
+  "Content-Type": "application/json",
+},
+}).then((res) => {
+if (res.ok) {
+  console.log("successful")
+  return res.json();
+}else{
+  return res.json().then((data) => {
+    alert("Something went Wrong")
+  })
+}
+})
+}
+    
+
+
+ 
 
 
   return (
@@ -45,10 +94,21 @@ const AddExpense = ({onAddExpense}) => {
         className={stylesheet["add-expense"]}
       >
         <h5 className={stylesheet.title}>Add New Expense</h5>
-        <Form onSubmit={addExpenseHandler}>
-          <Form.Group className={stylesheet["form-group"]}>
+        <Form onSubmit={submitHandler}>
+          <Form.Group className={stylesheet["form-group"]} style={{display:'flex',flexDirection:"row",alignItems:"center"}}>
             <Form.Label>Amount: </Form.Label>
-            <Form.Control
+            <Form.Select  className={stylesheet["form-controls"]} aria-label="expensecurrency"
+              ref={currencyInputRef}
+              value={currency}
+              onChange={currencyInputChangeHandler}
+           >
+             <option value={null}>Select currency </option>
+            <option value="$">$</option>
+            <option value="₹">₹</option>
+            <option value="€">€</option>
+            €
+            </Form.Select>
+            <Form.Control style={{width:"100%"}}
               type="number"
               placeholder="Enter the Amount "
               ref={amountInputRef}
@@ -56,6 +116,7 @@ const AddExpense = ({onAddExpense}) => {
               onChange={amountInputChangeHandler}
               className={stylesheet["form-controls"]}
             />
+          
           </Form.Group>
           <Form.Group className={stylesheet["form-group"]}>
             <Form.Label>Description: </Form.Label>
@@ -76,11 +137,11 @@ const AddExpense = ({onAddExpense}) => {
               onChange={categroyInputChangeHandler}
               className={stylesheet["form-controls"]}
             >
-              <option>Select Where You Spend </option>
-              <option>Car servicing </option>
-              <option>Petrol </option>
-              <option>Food</option>
-              <option>Grocery</option>
+              <option value={null}>Select Where You Spend </option>
+              <option value="car servicing">Car servicing </option>
+              <option value="petrol">Petrol </option>
+              <option value='food'>Food</option>
+              <option value="grocery">Grocery</option>
             </Form.Select>
           </Form.Group>
           <Form.Group style={{textAlign:'center'}}>

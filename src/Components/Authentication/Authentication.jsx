@@ -92,7 +92,7 @@ const Authentication = (props) => {
             console.log("User has successfully signed up")
           }
           
-          authcontext.login(data.idToken);
+          authcontext.login(data.idToken,data.email);
           if(!isLogin){
             confirmPasswordInputRef.current.value=""
           }
