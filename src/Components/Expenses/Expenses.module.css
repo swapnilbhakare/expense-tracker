@@ -2,8 +2,8 @@
     background: #fff;
     width: 500px;
     /* height: 400px; */
-    margin: 60px auto ;
-   
+    margin: 60px auto;
+
     box-sizing: border-box;
     box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
     padding: 5px 20px;
@@ -12,11 +12,22 @@
 
 }
 
+tr {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+
+
+}
+
+td {
+    margin-left: 20px;
+}
+
 .ul {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
- 
 
 }
 
@@ -27,6 +38,31 @@
     margin: 5px 0;
     transition: 0.3s;
     color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.list p {
+    font-size: 1.1rem;
+}
+
+.deleteBtn {
+    font-size: 1.4rem;
+    border: none;
+    color: red;
+    background: transparent;
+    cursor: pointer;
 
 
 }
+
+.editBtn {
+    margin-left: 10px;
+    border: none;
+    font-size: 1.4rem;
+    background: transparent;
+    color: turquoise;
+    cursor: pointer;
+}
+

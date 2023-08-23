@@ -36,7 +36,7 @@ const AddExpense = () => {
 const submitHandler=(event)=>{
   event.preventDefault()
   const expenseData={
-    currency,currency,
+    currency:currency,
     amount:amount,
     description:description,
     category:category

@@ -17,7 +17,7 @@ const Header = (props) => {
   };
   return (
     <>
-      <Navbar expand="lg" className={stylesheet.navbar}>
+      <Navbar  className={stylesheet.navbar}>
         <Container>
           <Nav className="flex">
             <Nav.Item style={{ color: "turquoise", fontSize: "25px" }}>
