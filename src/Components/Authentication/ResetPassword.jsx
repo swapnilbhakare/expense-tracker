@@ -71,10 +71,9 @@ const ResetPassword = (props) => {
       <Form
         onSubmit={resetPasswordHandler}
         className={stylesheet["auth-root-reset"]}
-        breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
-        minbreakpoint="xxs"
+    
       >
-        <Row xs={2} md={4} lg={6}>
+        <Row >
           <Col>
             <h2 className={stylesheet.heading}>
               <MdLockReset className={stylesheet.lock} />
@@ -82,9 +81,7 @@ const ResetPassword = (props) => {
             </h2>
           </Col>
           <Form.Group
-            as={Col}
-            xs={12}
-            md={8}
+            
             className={`${stylesheet["form-group"]}`}
           >
             <Form.Label className={stylesheet["form-label"]}>Email</Form.Label>
@@ -98,7 +95,7 @@ const ResetPassword = (props) => {
               required
             />
           </Form.Group>
-          <Form.Group as={Col} className={`${stylesheet["form-group"]}`}>
+          <Form.Group  className={`${stylesheet["form-group"]}`}>
             {!isLoading ? (
               <Button type="submit" className={stylesheet.btn}>
                 Reset

@@ -1,24 +1,26 @@
 .navbar{
- display: flex;  
- align-items: center;
- justify-content: space-around;
- padding: 20px auto;
- height: 60px;
+ display: flex !important;  
+ align-items: center !important;
+ justify-content: space-around !important; 
+ padding:  5px !important;
+
  box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
    
  
 }
 .completeProfile{
-    color: turquoise;
-    text-decoration: none;
-    margin-left: 2px;
+    color: turquoise !important;
+    text-decoration: none !important;
+    margin-left: 2px !important;
 }
 .logoutBtn{
-    background: none;
-    border: none;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+    background: none !important;
+    border: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+  align-items: center;
+ 
     cursor: pointer;
     
 }

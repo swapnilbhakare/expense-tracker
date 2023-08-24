@@ -1,109 +1,134 @@
 .auth-root {
+   
     background: #fff;
-    width: 300px;
-    height: 400px;
-    margin: 80px auto 0;
-    box-sizing: border-box;
+    width: 300px !important;
+    height: 400px !important;
+    margin: 80px auto 0 !important;
+    box-sizing: border-box !important;
     box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
-    padding: 5px 20px;
-    border-radius: 4px;
+    padding:  20px !important;
+    border-radius: 4px !important;
     /* transition: 0.3s; */
-
+ 
 }
-.auth-root-login{
-    background: #fff;
-    width: 300px;
-    height: 350px;
-    margin: 80px auto 0;
-    box-sizing: border-box;
+
+.auth-root-login {
+    background: #fff !important;
+    width: 300px !important;
+    height: 350px !important;
+    margin: 80px auto 0 !important;
+    box-sizing: border-box !important;
     box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
-    padding: 5px 20px;
-    border-radius: 4px;
+    padding: 5px 20px !important;
+    border-radius: 4px !important;
     /* transition: 0.3s; */
 
 
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
     margin-bottom: 20px;
- 
-   
+
+
 }
-.heading{
+.heading {
     display: flex;
     align-items: center;
     justify-content: center;
     text-transform: capitalize;
-    
-   
+
 }
-.lock{
-    background-color:turquoise ;
+
+.lock {
+    background-color: turquoise;
     border-radius: 50%;
-    padding: 4px;
-    margin-right: 5px;
+    padding: 4px !important;
+    margin-right: 5px !important;
     color: white;
 }
 
-.form-controls{
-    outline: none;
-    border: 0;
-    border-bottom: 2px solid turquoise;
+.form-controls {
+
+    outline: none !important;
+    border: none !important;
+    border-bottom: 2px solid turquoise !important;
     margin-top: 5px;
-    padding: 5px 0 ;
+    padding: 5px 0;
+    border-radius: 0 !important;
+    width: 100% !important;
 
 }
-.form-controls::placeholder{
+
+.form-controls:focus,
+.form-controls::backdrop {
+
+    /* border: none !important; */
+    box-shadow: none !important;
+
+}
+
+.form-controls::placeholder {
     color: lightgray;
-}
-.form-label{
-    font-weight:400;
-}
-.btn{
     border: none;
-    background-color: turquoise;
-    padding: 10px 35px;
-    width: 75%;
-    margin: 0 auto;
-    border-radius: 20px;
+}
+
+.form-label {
+    font-weight: 400;
+    margin-bottom: 0 !important;
+}
+
+.btn {
+
+    border: none !important;
+    display: block !important;
+    background-color: turquoise !important;
+    padding: 5px 20px !important;
+    width: 80%;
+    margin: 0 auto !important;
+    border-radius: 20px !important;
     color: #fff;
-    margin-top: 5px;
-    border: 1px solid turquoise;
+    margin-top: 5px !important;
+    border: 1px solid turquoise !important;
     transition: 0.3s;
-    text-transform: uppercase;
+    text-transform: uppercase !important;
     cursor: pointer;
 
 
 }
-.btn:hover, .btn:active{
-    background-color: transparent;
-    border: 1px solid turquoise;
-    color: #000;
-    
+
+.btn:hover,
+.btn:active {
+    background-color: transparent !important;
+    border: 1px solid turquoise !important;
+    color: #000 !important;
+
 }
 
-.forgetBtn{
-    background: none;
-    border:none;
-    color: turquoise;
-    cursor: pointer;
-    margin: 0 auto;
+.forgetBtn {
+    background: none !important;
+    border: none !important;
+    color: turquoise !important;
+    cursor: pointer !important;
+    margin: 0 auto !important;
 }
-.forgetBtn:hover{
+
+.forgetBtn:hover {
     color: rgb(49, 181, 168);
 
 }
 
-.switchBtn{
-    display: flex;
-    width: 300px;
-    border: none;
-    border: 1px solid turquoise;
+.switchBtn {
+    display: flex !important;
+    width: 300px !important;
+    border: none !important;
+    background-color: transparent !important;
+    border: 1px solid turquoise !important;
     padding: 10px 35px;
-background: transparent;
+    background: transparent;
     border-radius: 10px;
+    color: #000 !important;
     cursor: pointer;
     margin: 10px auto 0;
 

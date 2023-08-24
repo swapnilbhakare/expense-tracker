@@ -19,7 +19,7 @@ const Header = (props) => {
     <>
       <Navbar  className={stylesheet.navbar}>
         <Container>
-          <Nav className="flex">
+          <Nav >
             <Nav.Item style={{ color: "turquoise", fontSize: "25px" }}>
               Expense Tracker
             </Nav.Item>

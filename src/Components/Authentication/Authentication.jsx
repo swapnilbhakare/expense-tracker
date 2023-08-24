@@ -119,10 +119,9 @@ const Authentication = (props) => {
         onSubmit={submitHandler}
         
         className={`${isLogin?stylesheet['auth-root-login']:stylesheet["auth-root"]}`}
-        breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
-        minbreakpoint="xxs"
+       
       >
-        <Row xs={2} md={4} lg={6}>
+        <Row >
           <Col>
             <h2 className={stylesheet.heading}>
               <BiSolidLockAlt className={stylesheet.lock} />
@@ -130,25 +129,21 @@ const Authentication = (props) => {
             </h2>
           </Col>
           <Form.Group
-            as={Col}
-            xs={12}
-            md={8}
+            
             className={`${stylesheet["form-group"]}`}
           >
             <Form.Label className={stylesheet["form-label"]}>Email</Form.Label>
             <Form.Control
               className={`${stylesheet["form-controls"]}`}
               type="email"
-              placeholder="Email"
+              placeholder="Enter Email"
               ref={emailInputRef}
               required
             />
           </Form.Group>
 
           <Form.Group
-            as={Col}
-            xs={12}
-            md={8}
+          
             className={`${stylesheet["form-group"]}`}
           >
             <Form.Label className={stylesheet["form-label"]}>
@@ -164,9 +159,7 @@ const Authentication = (props) => {
           </Form.Group>
           {!isLogin && (
             <Form.Group
-              as={Col}
-              xs={12}
-              md={8}
+              
               className={`${stylesheet["form-group"]}`}
             >
               <Form.Label className={stylesheet["form-label"]}>
@@ -182,11 +175,12 @@ const Authentication = (props) => {
             </Form.Group>
           )}
 
-          <Form.Group as={Col} className={`${stylesheet["form-group"]}`}>
+          <Form.Group  className={`${stylesheet["form-group"]}`}>
             <Button type="submit" className={stylesheet.btn}>
               {isLogin ? "Log In" : "Sign Up"}
             </Button>
           </Form.Group >
+
           {isLogin &&<Form.Group as={Col} className={`${stylesheet["form-group"]}`}>
             <Button onClick={forgetPasswordHandler} className={stylesheet.forgetBtn}> Forget Password ?</Button>
           </Form.Group> }
