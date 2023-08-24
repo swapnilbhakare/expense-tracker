@@ -4,7 +4,7 @@ import { Button, Container, ListGroup, Modal, Form } from "react-bootstrap";
 import AuthContext from "../../Store/AuthContext";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import {GiCancel} from 'react-icons/gi'
-import { eventWrapper } from "@testing-library/user-event/dist/utils";
+import {BsSave} from 'react-icons/bs'
 const Expenses = () => {
   const authcontext = useContext(AuthContext);
   const [expenses, setExpenses] = useState([]);
@@ -42,14 +42,25 @@ const Expenses = () => {
   };
 
 
-  const handleEditModalClose=()=>{
+  const handleEditModalClose = () => {
     setShowEditModal(false);
     setExpenseToEdit(null);
-  }
+  };
+
   const handleEditModalShow = (expense) => {
     setShowEditModal(true);
     setExpenseToEdit(expense);
   };
+  const handleEditInputChange=(event)=>{
+    const {name,value}= event.target
+    setExpenseToEdit((prevExpense)=>(
+      {
+        ...prevExpense,
+        [name]:value,
+      }
+    ))
+  }
+   
 
   const handleEditExpense = (event) => {
     event.preventDefault();
@@ -127,7 +138,7 @@ const Expenses = () => {
             style={{ textAlign: "justify" }}
             className={stylesheet.list}
           >
-            Amount Description Category{" "}
+            Amount - Description - Category{" "}
           </ListGroup.Item>
           {expenses.map((expense, index) => (
             <ListGroup.Item
@@ -138,10 +149,10 @@ const Expenses = () => {
             >
               <p>
                 <span>
-                  {expense.currency}
-                  {expense.amount}
+                  {expense.currency} 
+                  {expense.amount} -
                 </span>
-                <span style={{ margin: "10px" }}>{expense.description}</span>
+                <span style={{ margin: "10px" }}>{expense.description} -</span> 
                 <span>{expense.category}</span>
               </p>
               <span>
@@ -159,8 +170,9 @@ const Expenses = () => {
             </ListGroup.Item>
           ))}
         </ListGroup>
-      </Container>
-{/* Delete Modal */}
+
+
+        {/* Delete Modal */}
       <Modal
         show={showDeleteModal}
         backdrop="static"
@@ -189,18 +201,21 @@ const Expenses = () => {
 
       </Modal>
       {/* Edit modal */}
-      <Modal show={showEditModal} onHide={handleEditModalClose}>
-      <Form onSubmit={handleEditExpense}>
-      <Modal.Header closeButton>
+      <Modal show={showEditModal} onHide={handleEditModalClose} >
+      <Form onSubmit={handleEditExpense}  className={stylesheet["edit-expense"]}>
+      <Modal.Header closeButton >
             <Modal.Title>Edit Expense</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <Form.Group  style={{display:'flex',flexDirection:"row",alignItems:"center"}}>
-            <Form.Label>Amount: </Form.Label>
-            <Form.Select  
-             defaultValue={expenseToEdit ? expenseToEdit.currency : ""}
-            
-
+          <Form.Group  className={stylesheet["form-group"]} >
+            <Form.Label className={stylesheet["form-label"]}>Amount: </Form.Label>
+           <div style={{display:'flex',flexDirection:"row",alignItems:"center"}}>
+           <Form.Select  
+            name="currency"
+             value={expenseToEdit ? expenseToEdit.currency : ""}
+             className={stylesheet['form-controls']}
+              
+              onChange={handleEditInputChange}
            >
              <option value={null}>Select currency </option>
             <option value="$">$</option>
@@ -209,25 +224,37 @@ const Expenses = () => {
             €
             </Form.Select>
             <Form.Control style={{width:"100%"}}
+             className={stylesheet['form-controls']}
               type="number"
-             
-              defaultValue={expenseToEdit ? expenseToEdit.amount : ""}
+             name="amount"
+              value={expenseToEdit ? expenseToEdit.amount : ""}
+              onChange={handleEditInputChange}
               />
+
+
+           </div>
           
           </Form.Group>
           <Form.Group className={stylesheet["form-group"]}>
             <Form.Label>Description: </Form.Label>
             <Form.Control
-              type="text"
-              defaultValue={expenseToEdit ? expenseToEdit.description : ""}
+            className={stylesheet['form-controls']}
               
+              type="text"
+              name="description"
+              value={expenseToEdit ? expenseToEdit.description : ""}
+              onChange={handleEditInputChange}
               />
           </Form.Group>
           <Form.Group className={stylesheet["form-group"]}>
+          <Form.Label className={stylesheet["form-label"]}>Category: </Form.Label>
             <Form.Select
-              aria-label="expenseCategroy"
-              defaultValue={expenseToEdit ? expenseToEdit.category : ""}
+            className={stylesheet['form-controls']}
               
+              aria-label="expenseCategroy"
+              value={expenseToEdit ? expenseToEdit.category : ""}
+              name="category"
+              onChange={handleEditInputChange}
               >
               <option value={null}>Select Where You Spend </option>
               <option value="car servicing">Car servicing </option>
@@ -239,15 +266,18 @@ const Expenses = () => {
 
           </Modal.Body>
           <Modal.Footer>
-            <Button  onClick={handleEditModalClose}>
-              Cancel
+            <Button  className={stylesheet['modal-delete']} onClick={handleEditModalClose}>
+              <GiCancel/>
             </Button>
-            <Button  type="submit">
-              Save Changes
+            <Button  type="submit" className={stylesheet['modal-cancel']}>
+            <BsSave/>
+             
             </Button>
           </Modal.Footer>
           </Form>
       </Modal>
+      </Container>
+
     </>
   );
 };

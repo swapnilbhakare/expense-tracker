@@ -1,6 +1,6 @@
 .expenses {
     background: #fff;
-    width: 500px;
+    width: 500px !important;
     /* height: 400px; */
     margin: 60px auto;
 
@@ -60,16 +60,58 @@
     color: red !important;
   
     font-size: 1.2rem !important;
-    border: 1px solid red !important;
+  border: none !important;
     align-items: center !important;
 }
 
 .modal-cancel{
     display: flex !important;
     background: transparent !important;
-   border: 1px solid turquoise !important;
+border: none !important;
    align-items: center !important;
    color: turquoise !important;
    font-size: 1.3rem !important;
 
+}
+.edit-expense {
+    background: #fff;
+    width: 500px  !important;
+    /* height: 400px; */
+   
+    box-sizing: border-box !important;
+    box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
+    padding: 5px 20px !important;
+    border-radius: 4px !important;
+    /* transition: 0.3s; */
+
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+   
+}
+.form-controls{
+    outline: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 2px solid turquoise !important;
+    margin-top: 5px;
+    padding: 5px 0 ;
+
+}
+.form-controls:focus,
+.form-controls::backdrop {
+
+    /* border: none !important; */
+    box-shadow: none !important;
+
+}
+.form-controls::placeholder{
+    color: lightgray;
+}
+.form-label{
+    font-weight:400;
 }

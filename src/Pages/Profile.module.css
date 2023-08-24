@@ -1,7 +1,7 @@
 .profileContainer{
     box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
    margin: 20px auto;
-   padding: 20px 5px;
+   padding: 20px 5px ;
    
 }
 .inputTxt{
@@ -10,9 +10,9 @@
     align-items: center;
 }
 .profile{
-    color: turquoise;
+    color: turquoise !important;
     height: 200px;
-    margin: 30px auto;
+    margin: 30px auto !important;
   
 
 }
@@ -27,9 +27,10 @@
    
 }
 .updateBtn button{
-    background-color: aquamarine;
+    background-color: turquoise;
     outline: none;
-    border: none;
+   border: 1px solid turquoise;
+
     cursor: pointer;
     margin-top: 20px;
     margin-left: 0;
@@ -38,11 +39,16 @@
     border-radius: 22px;
     text-transform: uppercase;
 }
+.updateBtn button:hover{
+    background-color: transparent;
+    color: #000;
+    border: 1px solid turquoise;
+}
 .cancelbtn{
     border: none;
-    border:1px solid rgb(255, 0, 0);
-    color: #000;
-    background-color: transparent;
+    border:1px solid rgb(255, 0, 0) !important; 
+    color: red !important;
+    background-color: transparent !important ;
     padding: 8px 10px;
     border-radius: 9px;
     cursor: pointer;

@@ -96,7 +96,8 @@ if (res.ok) {
         <h5 className={stylesheet.title}>Add New Expense</h5>
         <Form onSubmit={submitHandler}>
           <Form.Group className={stylesheet["form-group"]} style={{display:'flex',flexDirection:"row",alignItems:"center"}}>
-            <Form.Label>Amount: </Form.Label>
+            <Form.Label className={stylesheet["form-label"]}>Amount: </Form.Label>
+            <div style={{display:'flex',flexDirection:"row",alignItems:"center"}}> 
             <Form.Select  className={stylesheet["form-controls"]} aria-label="expensecurrency"
               ref={currencyInputRef}
               value={currency}
@@ -116,10 +117,11 @@ if (res.ok) {
               onChange={amountInputChangeHandler}
               className={stylesheet["form-controls"]}
             />
+            </div>
           
           </Form.Group>
           <Form.Group className={stylesheet["form-group"]}>
-            <Form.Label>Description: </Form.Label>
+            <Form.Label className={stylesheet["form-label"]}>Description: </Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter Description "
@@ -130,6 +132,7 @@ if (res.ok) {
             />
           </Form.Group>
           <Form.Group className={stylesheet["form-group"]}>
+          <Form.Label className={stylesheet["form-label"]}>Category: </Form.Label>
             <Form.Select
               aria-label="expenseCategroy"
               ref={categroyInputRef}
