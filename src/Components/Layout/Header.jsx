@@ -1,17 +1,19 @@
-import React, { useContext } from "react";
+import React from "react";
 import stylesheet from "./Header.module.css";
-import AuthContext from "../../Store/AuthContext";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { BiLogOut } from "react-icons/bi";
-
+import { useDispatch,useSelector } from "react-redux";
+import {logout} from '../../Store/authSlice'
 const Header = (props) => {
-  const authcontext = useContext(AuthContext);
+const dispatch = useDispatch()
+const auth = useSelector((state)=>state.authentication)
   const navigate = useNavigate();
+
 
   const location = useLocation();
   const logoutHandler = () => {
-    authcontext.logout();
+    dispatch(logout())
     navigate("/auth",{replace:true})
     
   };
@@ -35,7 +37,7 @@ const Header = (props) => {
             </span>
           )}
         </Container>
-        {authcontext.isLoggedIn && location.pathname !== "/auth" && (
+        {auth.isLoggedIn && location.pathname !== "/auth" && (
           <Button className={stylesheet.logoutBtn} onClick={logoutHandler}>
             <BiLogOut className={stylesheet["logout-icon"]} />
             <span>Log Out</span>

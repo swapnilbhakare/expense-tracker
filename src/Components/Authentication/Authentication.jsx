@@ -1,35 +1,43 @@
-import React, { useRef, useState, useContext } from "react";
-
+import React, { useRef, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { BiSolidLockAlt } from "react-icons/bi";
 import stylesheet from "./Authentication.module.css";
 import { Col, Row, Button, Form } from "react-bootstrap";
-import AuthContext from "../../Store/AuthContext";
+import {login} from '../../Store/authSlice'
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 const Authentication = (props) => {
   const navigate = useNavigate();
-
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const confirmPasswordInputRef = useRef();
-
-  const authcontext = useContext(AuthContext);
+  const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(true);
-
+ 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
   const submitHandler = (event) => {
     event.preventDefault();
-
     const enterdEmail = emailInputRef.current.value;
     const enterdPassword = passwordInputRef.current.value;
     const enterdConfirmPassword = !isLogin? confirmPasswordInputRef.current.value:null
-    let errorMessage;
+   
 
     let url;
     if (!isLogin && enterdPassword !== enterdConfirmPassword) {
       console.log(enterdPassword,enterdConfirmPassword)
-      alert("password didn't match");
+      toast.error("Passwords did not match", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+
       return;
     }
 
@@ -60,45 +68,112 @@ const Authentication = (props) => {
           return res.json().then((data) => {
             if(isLogin){
               if(data.error.message==="EMAIL_NOT_FOUND"){
-                errorMessage="User not found."
+               
+                toast.error("User not found.", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                });
               }else if(data.error.message==="INVALID_PASSWORD"){
-                errorMessage ="Invalid password."
+
+                toast.error("Invalid password.", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                });
+
+                
               }else{
-                errorMessage="Login Failed!"
+                
+                toast.error("Login Failed!", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                });
               }
             }
             else{
               if(data.error.message==="EMAIL_EXISTS"){
-                  errorMessage="User already exists."
+                
+                
+                  toast.error("User already exists.", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                  });
               }else{
-                errorMessage="Sign-up Failed!"
+              
+                toast.error("Sign-up Failed!", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                });
               }
             }
            
-            throw new Error(errorMessage);
+           
           });
         }
       })
       .then((data) => {
-        if(errorMessage){
-          alert(errorMessage)
-        }else{
+        console.log(data)
+        const idToken = data.idToken;
+        const userId = data.email;
+        dispatch(login({ idToken, userId }));
           if(isLogin){
+            toast.success("User has successfully signed in", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+            });
             navigate('/home')
-            console.log("User has successfully signed in")
+            
           }else{
            
             navigate('/verification')
-            console.log("User has successfully signed up")
+            
+            toast.success("User has successfully signed up", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+            });
           }
           
-          authcontext.login(data.idToken,data.email);
+        
           if(!isLogin){
             confirmPasswordInputRef.current.value=""
           }
           emailInputRef.current.value=""
           passwordInputRef.current.value=""
-        }
+        
         
         
        

@@ -1,71 +1,87 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import stylesheet from "./Expenses.module.css";
 import { Button, Container, ListGroup, Modal, Form } from "react-bootstrap";
-import AuthContext from "../../Store/AuthContext";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-import {GiCancel} from 'react-icons/gi'
-import {BsSave} from 'react-icons/bs'
+import { GiCancel } from "react-icons/gi";
+import { BsSave } from "react-icons/bs";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  setExpenses,
+  setShowEditModal,
+  setShowDeleteModal,
+  setExpenseToEdit,
+  setExpenseToDelete,
+  setTotalAmount,
+} from "../../Store/expensesSlice";
 const Expenses = () => {
-  const authcontext = useContext(AuthContext);
-  const [expenses, setExpenses] = useState([]);
+  const [csvData, setCsvData] = useState("");
+  const dispatch = useDispatch();
+  const userEmail = useSelector((state) => state.authentication.userId);
+  const emailId = userEmail;
+  const email = emailId.replace(/[^a-zA-Z0-9]/g, "");
 
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [expenseToEdit, setExpenseToEdit] = useState(null);
-  const [expenseToDelete, setExpenseToDelete] = useState(null);
+  const { expenses, totalAmount } = useSelector((state) => state.expense);
 
-  const email = authcontext.email.replace(/[^a-zA-Z0-9]/g, "");
-
-  const handlerDeleteModalClose = () => {
-    setShowDeleteModal(false);
-    setExpenseToEdit(null);
+  // delete expense modal functionality
+  const handleDeleteModalClose = () => {
+    dispatch(setShowDeleteModal(false));
+    dispatch(setExpenseToDelete(null));
   };
   const handleDeleteModalShow = (expense) => {
-    setShowDeleteModal(true);
-    setExpenseToDelete(expense);
+    dispatch(setShowDeleteModal(true));
+    dispatch(setExpenseToDelete(expense));
+  };
+  // edit expense modal functionality
+ 
+
+  const handleEditModalShow = (expense) => {
+    dispatch(setShowEditModal(false));
+    dispatch(setExpenseToEdit(expense));
+  };
+  const handleEditModalClose = () => {
+    dispatch(setShowEditModal(true));
+    dispatch(setExpenseToEdit(null));
   };
 
   const deleteExpenseHandler = () => {
     fetch(
-      `https://expenses-tracker-8f78a-default-rtdb.firebaseio.com/expenses${email}/${expenseToDelete.id}.json`,
+      `https://expenses-tracker-8f78a-default-rtdb.firebaseio.com/expenses${email}/${setExpenseToDelete.id}.json`,
       {
         method: "DELETE",
       }
     ).then((res) => {
       if (res.ok) {
-        console.log("delete");
+        toast.success("successfully deleted", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
         return res.json();
       }
     });
-    handlerDeleteModalClose();
+    dispatch(setExpenseToDelete(null));
+    dispatch(setShowDeleteModal(false));
     fetchExpenseHandler();
   };
 
-
-  const handleEditModalClose = () => {
-    setShowEditModal(false);
-    setExpenseToEdit(null);
+  const handleEditInputChange = (event) => {
+    const { name, value } = event.target;
+    setExpenseToEdit((prevExpense) => ({
+      ...prevExpense,
+      [name]: value,
+    }));
   };
-
-  const handleEditModalShow = (expense) => {
-    setShowEditModal(true);
-    setExpenseToEdit(expense);
-  };
-  const handleEditInputChange=(event)=>{
-    const {name,value}= event.target
-    setExpenseToEdit((prevExpense)=>(
-      {
-        ...prevExpense,
-        [name]:value,
-      }
-    ))
-  }
-   
 
   const handleEditExpense = (event) => {
     event.preventDefault();
     const updatedExpense = {
-      ...expenseToEdit,
+      ...setExpenseToEdit,
       currency: event.target.currency.value,
       amount: event.target.amount.value,
       description: event.target.description.value,
@@ -82,34 +98,68 @@ const Expenses = () => {
       }
     ).then((res) => {
       if (res.ok) {
-        console.log("sucessful");
+        toast.success("successfully updated", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
         return res.json();
       } else {
         res.json().then((data) => {
-          console.log("Failed to update expense");
+          toast.error("Failed to update expense", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+          });
         });
       }
     });
-    handleEditModalClose();
+    dispatch(setExpenseToEdit(null));
+    dispatch(setShowEditModal(false));
     fetchExpenseHandler();
   };
 
-  const fetchExpenseHandler = () => {
+  const fetchExpenseHandler = useCallback(() => {
     fetch(
       `https://expenses-tracker-8f78a-default-rtdb.firebaseio.com/expenses${email}.json`
     )
       .then((res) => {
         if (res.ok) {
-          console.log("successful");
+          toast.success("successfully fetched", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+          });
           return res.json();
         } else {
           return res.json().then((data) => {
-            alert("Failed to fetch expenses");
+            toast.error("Failed to fetch expenses", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+            });
           });
         }
       })
       .then((data) => {
         let fetchedExpenses = [];
+        let loadedAmount = 0;
         for (const key in data) {
           fetchedExpenses.push({
             id: key,
@@ -118,17 +168,12 @@ const Expenses = () => {
             description: data[key].description,
             category: data[key].category,
           });
+          loadedAmount = loadedAmount + parseInt(data[key].amount);
         }
-        setExpenses(fetchedExpenses);
-      })
-      .catch((error) => {
-        console.error("Error", error);
+        dispatch(setExpenses(fetchedExpenses));
+        // dispatch(setTotalAmount(loadedAmount));
       });
-  };
-
-  useEffect(() => {
-    fetchExpenseHandler();
-  }, [fetchExpenseHandler]);
+  }, []);
 
   return (
     <>
@@ -149,10 +194,10 @@ const Expenses = () => {
             >
               <p>
                 <span>
-                  {expense.currency} 
+                  {expense.currency}
                   {expense.amount} -
                 </span>
-                <span style={{ margin: "10px" }}>{expense.description} -</span> 
+                <span style={{ margin: "10px" }}>{expense.description} -</span>
                 <span>{expense.category}</span>
               </p>
               <span>
@@ -163,7 +208,11 @@ const Expenses = () => {
                 >
                   <AiOutlineDelete />{" "}
                 </Button>
-                <Button type="submit" onClick={()=>handleEditModalShow(expense)} className={stylesheet.editBtn}>
+                <Button
+                  type="submit"
+                  onClick={() => handleEditModalShow(expense)}
+                  className={stylesheet.editBtn}
+                >
                   <AiOutlineEdit />
                 </Button>
               </span>
@@ -171,113 +220,120 @@ const Expenses = () => {
           ))}
         </ListGroup>
 
-
         {/* Delete Modal */}
-      <Modal
-        show={showDeleteModal}
-        backdrop="static"
-        keyboard={false}
-        onHide={handlerDeleteModalClose}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>
-          Delete Expense
-          </Modal.Title>
+        <Modal
+          show={setShowDeleteModal}
+          backdrop="static"
+          keyboard={false}
+          onHide={handleDeleteModalClose}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Delete Expense</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <p>Are you sure you want to delete this expense?</p>
-        </Modal.Body>
-     
-        <Modal.Footer>
-          <Button className={stylesheet['modal-cancel']} onClick={handlerDeleteModalClose}>
-            <GiCancel/>
-            
-          </Button>
-          <Button className={stylesheet['modal-delete']} onClick={deleteExpenseHandler}>
-            <AiOutlineDelete/>
-              
-          </Button>
-        </Modal.Footer>
-
-      </Modal>
-      {/* Edit modal */}
-      <Modal show={showEditModal} onHide={handleEditModalClose} >
-      <Form onSubmit={handleEditExpense}  className={stylesheet["edit-expense"]}>
-      <Modal.Header closeButton >
-            <Modal.Title>Edit Expense</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-          <Form.Group  className={stylesheet["form-group"]} >
-            <Form.Label className={stylesheet["form-label"]}>Amount: </Form.Label>
-           <div style={{display:'flex',flexDirection:"row",alignItems:"center"}}>
-           <Form.Select  
-            name="currency"
-             value={expenseToEdit ? expenseToEdit.currency : ""}
-             className={stylesheet['form-controls']}
-              
-              onChange={handleEditInputChange}
-           >
-             <option value={null}>Select currency </option>
-            <option value="$">$</option>
-            <option value="₹">₹</option>
-            <option value="€">€</option>
-            €
-            </Form.Select>
-            <Form.Control style={{width:"100%"}}
-             className={stylesheet['form-controls']}
-              type="number"
-             name="amount"
-              value={expenseToEdit ? expenseToEdit.amount : ""}
-              onChange={handleEditInputChange}
-              />
-
-
-           </div>
-          
-          </Form.Group>
-          <Form.Group className={stylesheet["form-group"]}>
-            <Form.Label>Description: </Form.Label>
-            <Form.Control
-            className={stylesheet['form-controls']}
-              
-              type="text"
-              name="description"
-              value={expenseToEdit ? expenseToEdit.description : ""}
-              onChange={handleEditInputChange}
-              />
-          </Form.Group>
-          <Form.Group className={stylesheet["form-group"]}>
-          <Form.Label className={stylesheet["form-label"]}>Category: </Form.Label>
-            <Form.Select
-            className={stylesheet['form-controls']}
-              
-              aria-label="expenseCategroy"
-              value={expenseToEdit ? expenseToEdit.category : ""}
-              name="category"
-              onChange={handleEditInputChange}
-              >
-              <option value={null}>Select Where You Spend </option>
-              <option value="car servicing">Car servicing </option>
-              <option value="petrol">Petrol </option>
-              <option value='food'>Food</option>
-              <option value="grocery">Grocery</option>
-            </Form.Select>
-          </Form.Group>
-
+            <p>Are you sure you want to delete this expense?</p>
           </Modal.Body>
+
           <Modal.Footer>
-            <Button  className={stylesheet['modal-delete']} onClick={handleEditModalClose}>
-              <GiCancel/>
+            <Button
+              className={stylesheet["modal-cancel"]}
+              onClick={handleDeleteModalClose}
+            >
+              <GiCancel />
             </Button>
-            <Button  type="submit" className={stylesheet['modal-cancel']}>
-            <BsSave/>
-             
+            <Button
+              className={stylesheet["modal-delete"]}
+              onClick={deleteExpenseHandler}
+            >
+              <AiOutlineDelete />
             </Button>
           </Modal.Footer>
+        </Modal>
+        {/* Edit modal */}
+        <Modal show={setShowEditModal} onHide={handleEditModalClose}>
+          <Form
+            onSubmit={handleEditExpense}
+            className={stylesheet["edit-expense"]}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Edit Expense</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group className={stylesheet["form-group"]}>
+                <Form.Label className={stylesheet["form-label"]}>
+                  Amount:{" "}
+                </Form.Label>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Form.Select
+                    name="currency"
+                    value={setExpenseToEdit ? setExpenseToEdit.currency : ""}
+                    className={stylesheet["form-controls"]}
+                    onChange={handleEditInputChange}
+                  >
+                    <option value={null}>Select currency </option>
+                    <option value="$">$</option>
+                    <option value="₹">₹</option>
+                    <option value="€">€</option>€
+                  </Form.Select>
+                  <Form.Control
+                    style={{ width: "100%" }}
+                    className={stylesheet["form-controls"]}
+                    type="number"
+                    name="amount"
+                    value={setExpenseToEdit ? setExpenseToEdit.amount : ""}
+                    onChange={handleEditInputChange}
+                  />
+                </div>
+              </Form.Group>
+              <Form.Group className={stylesheet["form-group"]}>
+                <Form.Label>Description: </Form.Label>
+                <Form.Control
+                  className={stylesheet["form-controls"]}
+                  type="text"
+                  name="description"
+                  value={setExpenseToEdit ? setExpenseToEdit.description : ""}
+                  onChange={handleEditInputChange}
+                />
+              </Form.Group>
+              <Form.Group className={stylesheet["form-group"]}>
+                <Form.Label className={stylesheet["form-label"]}>
+                  Category:{" "}
+                </Form.Label>
+                <Form.Select
+                  className={stylesheet["form-controls"]}
+                  aria-label="expenseCategroy"
+                  value={setExpenseToEdit ? setExpenseToEdit.category : ""}
+                  name="category"
+                  onChange={handleEditInputChange}
+                >
+                  <option value={null}>Select Where You Spend </option>
+                  <option value="car servicing">Car servicing </option>
+                  <option value="petrol">Petrol </option>
+                  <option value="food">Food</option>
+                  <option value="grocery">Grocery</option>
+                </Form.Select>
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                className={stylesheet["modal-delete"]}
+                onClick={handleEditModalClose}
+              >
+                <GiCancel />
+              </Button>
+              <Button type="submit"  className={stylesheet["modal-cancel"]}>
+                <BsSave />
+              </Button>
+            </Modal.Footer>
           </Form>
-      </Modal>
+        </Modal>
       </Container>
-
     </>
   );
 };

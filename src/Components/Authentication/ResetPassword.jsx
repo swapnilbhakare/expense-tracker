@@ -3,6 +3,8 @@ import { MdLockReset } from "react-icons/md";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import stylesheet from "./ResetPassword.module.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const ResetPassword = (props) => {
   const navigate = useNavigate();
 
@@ -38,30 +40,77 @@ const ResetPassword = (props) => {
             if (data.error && data.error.message) {
               const errorMessage = data.error.message;
               if (errorMessage.includes("EMAIL_NOT_FOUND")) {
-                throw new Error("Email not found. Please try again.");
+              
+                toast.error("Email not found. Please try again.", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                });
+          
               } else if (errorMessage.includes("INVALID_EMAIL")) {
-                throw new Error(
-                  "Invalid email format. Please provide a valid email."
-                );
+                toast.error("Invalid email format. Please provide a valid email.", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                });
+               
               } else if (errorMessage.includes("USER_DISABLED")) {
-                throw new Error(
-                  "This user account has been disabled. Contact support."
-                );
+               
+                toast.error( "This user account has been disabled. Contact support.", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                });
               } else {
-                throw new Error("Verification failed. Please try again later.");
+                toast.error("Verification failed. Please try again later.", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                });
               }
             } else {
-              throw new Error("Verification failed. Please try again later.");
+              toast.error("Verification failed. Please try again later.", {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+              });
             }
           });
         }
       })
       .then((data) => {
+        toast.success("link successfully sent on your registerd number", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
         navigate("/auth");
       })
-      .catch((error) => {
-        alert(error.message);
-      });
+     
   };
   const emailInputChangeHandler = () => {
     setEmail(emailInputRef.current.value);

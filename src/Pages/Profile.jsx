@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {  useEffect, useRef, useState } from "react";
 import Header from "../Components/Layout/Header";
 import { Button, Container, Form } from "react-bootstrap";
-import AuthContext from "../Store/AuthContext";
 import { useNavigate } from "react-router-dom";
 import stylesheet from "./Profile.module.css";
 import { AiOutlineGithub, AiOutlineGlobal } from "react-icons/ai";
+import { useSelector } from "react-redux";
 const Profile = (props) => {
-  const authcontext = useContext(AuthContext);
+  const idToken = useSelector((state)=>state.authentication.idToken)
   const fullNameInputRef = useRef();
   const profileUrlRef = useRef();
 
@@ -20,7 +20,7 @@ const Profile = (props) => {
       {
         method: "POST",
         body: JSON.stringify({
-          idToken: authcontext.token,
+          idToken: idToken,
         }),
         Headers: {
           "Content-Type": "application/json",
@@ -47,7 +47,7 @@ const Profile = (props) => {
       .catch((error) => {
         alert(error.message);
       });
-  }, []);
+  }, [idToken]);
   const cancelHandler = () => {
     navigate("/home");
   };
@@ -63,7 +63,7 @@ const Profile = (props) => {
         method: "POST",
 
         body: JSON.stringify({
-          idToken: authcontext.token,
+          idToken: idToken,
           displayName: enterdFullName,
           photoUrl: enterdProfileUrl,
           returnSecureToken: true,
