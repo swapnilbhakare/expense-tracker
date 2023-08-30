@@ -44,6 +44,7 @@ const Expenses = () => {
     dispatch(expenseActions.setShowEditModal(false));
     dispatch(expenseActions.setExpenseToEdit(null));
   };
+  // delete expnese handler
 
   const deleteExpenseHandler = () => {
     fetch(
@@ -73,10 +74,11 @@ const Expenses = () => {
 
   const handleEditInputChange = (event) => {
     const { name, value } = event.target;
-    expenseToEdit((prevExpense) => ({
-      ...prevExpense,
-      [name]: value,
-    }));
+    const updatedExpenseToEdit={
+      ...expenseToEdit,
+      [name]:value,
+    }
+    dispatch(expenseActions.setExpenseToEdit(updatedExpenseToEdit))
   };
 
   const handleEditExpense = (event) => {
