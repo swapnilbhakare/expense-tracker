@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import stylesheet from "./AddExpense.module.css";
 import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import {  setExpenses, setTotalAmount } from "../../Store/expensesSlice";
+import { expenseActions } from "../../Store/expensesSlice";
 const AddExpense = () => {
   const currencyInputRef = useRef();
   const amountInputRef = useRef();
@@ -107,8 +107,8 @@ const AddExpense = () => {
           loadedAmount = loadedAmount + parseInt(data[key].amount);
         
       }
-      dispatch(setExpenses(fetchedExpenses))
-      dispatch(setTotalAmount(loadedAmount))
+      dispatch(expenseActions.setExpenses(fetchedExpenses));
+      dispatch(expenseActions.setTotalAmount(loadedAmount));
     })
    
   },[addExpenseHandler]);

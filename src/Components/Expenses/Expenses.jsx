@@ -7,47 +7,47 @@ import { BsSave } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  setExpenses,
-  setShowEditModal,
-  setShowDeleteModal,
-  setExpenseToEdit,
-  setExpenseToDelete,
-  setTotalAmount,
-} from "../../Store/expensesSlice";
+import { expenseActions } from "../../Store/expensesSlice";
 const Expenses = () => {
+
   const [csvData, setCsvData] = useState("");
   const dispatch = useDispatch();
   const userEmail = useSelector((state) => state.authentication.userId);
   const emailId = userEmail;
   const email = emailId.replace(/[^a-zA-Z0-9]/g, "");
 
-  const { expenses, totalAmount } = useSelector((state) => state.expense);
-
+  const {
+    expenses,
+    totalAmount,
+    showEditModal,
+    expenseToEdit,
+    showDeleteModal,
+    expenseToDelete,
+  } = useSelector((state) => state.expense);
   // delete expense modal functionality
   const handleDeleteModalClose = () => {
-    dispatch(setShowDeleteModal(false));
-    dispatch(setExpenseToDelete(null));
+    dispatch(expenseActions.setShowDeleteModal(false));
+    dispatch(expenseActions.setExpenseToDelete(null));
   };
   const handleDeleteModalShow = (expense) => {
-    dispatch(setShowDeleteModal(true));
-    dispatch(setExpenseToDelete(expense));
+    dispatch(expenseActions.setShowDeleteModal(true));
+    dispatch(expenseActions.setExpenseToDelete(expense));
   };
   // edit expense modal functionality
  
 
   const handleEditModalShow = (expense) => {
-    dispatch(setShowEditModal(false));
-    dispatch(setExpenseToEdit(expense));
+    dispatch(expenseActions.setShowEditModal(true));
+    dispatch(expenseActions.setExpenseToEdit(expense));
   };
   const handleEditModalClose = () => {
-    dispatch(setShowEditModal(true));
-    dispatch(setExpenseToEdit(null));
+    dispatch(expenseActions.setShowEditModal(false));
+    dispatch(expenseActions.setExpenseToEdit(null));
   };
 
   const deleteExpenseHandler = () => {
     fetch(
-      `https://expenses-tracker-8f78a-default-rtdb.firebaseio.com/expenses${email}/${setExpenseToDelete.id}.json`,
+      `https://expenses-tracker-8f78a-default-rtdb.firebaseio.com/expenses${email}/${expenseToDelete.id}.json`,
       {
         method: "DELETE",
       }
@@ -65,14 +65,15 @@ const Expenses = () => {
         return res.json();
       }
     });
-    dispatch(setExpenseToDelete(null));
-    dispatch(setShowDeleteModal(false));
+    dispatch(expenseActions.setExpenseToDelete(null));
+    dispatch(expenseActions.setShowDeleteModal(false));
+    
     fetchExpenseHandler();
   };
 
   const handleEditInputChange = (event) => {
     const { name, value } = event.target;
-    setExpenseToEdit((prevExpense) => ({
+    expenseToEdit((prevExpense) => ({
       ...prevExpense,
       [name]: value,
     }));
@@ -81,7 +82,7 @@ const Expenses = () => {
   const handleEditExpense = (event) => {
     event.preventDefault();
     const updatedExpense = {
-      ...setExpenseToEdit,
+      ...expenseToEdit,
       currency: event.target.currency.value,
       amount: event.target.amount.value,
       description: event.target.description.value,
@@ -122,8 +123,8 @@ const Expenses = () => {
         });
       }
     });
-    dispatch(setExpenseToEdit(null));
-    dispatch(setShowEditModal(false));
+    dispatch(expenseActions.setExpenseToEdit(null));
+    dispatch(expenseActions.setShowEditModal(false));
     fetchExpenseHandler();
   };
 
@@ -170,8 +171,8 @@ const Expenses = () => {
           });
           loadedAmount = loadedAmount + parseInt(data[key].amount);
         }
-        dispatch(setExpenses(fetchedExpenses));
-        // dispatch(setTotalAmount(loadedAmount));
+        dispatch(expenseActions.setExpenses(fetchedExpenses));
+    dispatch(expenseActions.setTotalAmount(loadedAmount));
       });
   }, []);
 
@@ -222,7 +223,7 @@ const Expenses = () => {
 
         {/* Delete Modal */}
         <Modal
-          show={setShowDeleteModal}
+          show={showDeleteModal}
           backdrop="static"
           keyboard={false}
           onHide={handleDeleteModalClose}
@@ -250,7 +251,7 @@ const Expenses = () => {
           </Modal.Footer>
         </Modal>
         {/* Edit modal */}
-        <Modal show={setShowEditModal} onHide={handleEditModalClose}>
+        <Modal show={showEditModal} onHide={handleEditModalClose}>
           <Form
             onSubmit={handleEditExpense}
             className={stylesheet["edit-expense"]}
@@ -272,7 +273,7 @@ const Expenses = () => {
                 >
                   <Form.Select
                     name="currency"
-                    value={setExpenseToEdit ? setExpenseToEdit.currency : ""}
+                    value={expenseToEdit ? expenseToEdit.currency : ""}
                     className={stylesheet["form-controls"]}
                     onChange={handleEditInputChange}
                   >
@@ -286,7 +287,7 @@ const Expenses = () => {
                     className={stylesheet["form-controls"]}
                     type="number"
                     name="amount"
-                    value={setExpenseToEdit ? setExpenseToEdit.amount : ""}
+                    value={expenseToEdit ? expenseToEdit.amount : ""}
                     onChange={handleEditInputChange}
                   />
                 </div>
@@ -297,7 +298,7 @@ const Expenses = () => {
                   className={stylesheet["form-controls"]}
                   type="text"
                   name="description"
-                  value={setExpenseToEdit ? setExpenseToEdit.description : ""}
+                  value={expenseToEdit ? expenseToEdit.description : ""}
                   onChange={handleEditInputChange}
                 />
               </Form.Group>
@@ -308,7 +309,7 @@ const Expenses = () => {
                 <Form.Select
                   className={stylesheet["form-controls"]}
                   aria-label="expenseCategroy"
-                  value={setExpenseToEdit ? setExpenseToEdit.category : ""}
+                  value={expenseToEdit ? expenseToEdit.category : ""}
                   name="category"
                   onChange={handleEditInputChange}
                 >

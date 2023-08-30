@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const expensesSlice = createSlice({
+const expenseSlice = createSlice({
   name: "expenses",
   initialState: {
     expenses: [],
@@ -9,10 +9,6 @@ const expensesSlice = createSlice({
     expenseToEdit: null,
     expenseToDelete: null,
     totalAmount: 0,
-    currency: "",
-    amount: "",
-    description: "",
-    category: "",
   },
   reducers: {
     setExpenses(state, action) {
@@ -36,12 +32,6 @@ const expensesSlice = createSlice({
   },
 });
 
-export const {
-  setExpenses,
-  setShowEditModal,
-  setShowDeleteModal,
-  setExpenseToEdit,
-  setExpenseToDelete,
-  setTotalAmount,
-} = expensesSlice.actions;
-export default expensesSlice.reducer;
+export const expenseActions = expenseSlice.actions;
+
+export default expenseSlice.reducer;
