@@ -7,6 +7,7 @@ import { AiOutlineGithub, AiOutlineGlobal } from "react-icons/ai";
 import { useSelector } from "react-redux";
 const Profile = (props) => {
   const idToken = useSelector((state)=>state.authentication.idToken)
+
   const fullNameInputRef = useRef();
   const profileUrlRef = useRef();
 

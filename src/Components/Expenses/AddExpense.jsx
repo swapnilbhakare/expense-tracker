@@ -78,7 +78,8 @@ const AddExpense = () => {
           alert("Something went Wrong");
         });
       }
-    });
+    })
+    fetchExpenseHandler()
   };
   const fetchExpenseHandler = useCallback(() => {
     fetch(

@@ -1,0 +1,14 @@
+.light-them{
+    background-color: white;
+}
+.dark-them{
+    background-color: #000 !important; 
+    color: #fff !important;
+}
+.active-premium{
+    margin-left: 80%;
+    margin-top:2%;
+    background-color: transparent !important;
+    border: 1px solid turquoise !important;
+    color: turquoise !important;
+}

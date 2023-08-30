@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { expenseActions } from "../../Store/expensesSlice";
 const Expenses = () => {
-
   const [csvData, setCsvData] = useState("");
   const dispatch = useDispatch();
   const userEmail = useSelector((state) => state.authentication.userId);
@@ -34,7 +33,6 @@ const Expenses = () => {
     dispatch(expenseActions.setExpenseToDelete(expense));
   };
   // edit expense modal functionality
- 
 
   const handleEditModalShow = (expense) => {
     dispatch(expenseActions.setShowEditModal(true));
@@ -63,22 +61,26 @@ const Expenses = () => {
           draggable: true,
           progress: undefined,
         });
+        const updatedExpense = expenses.filter(
+          (expense) => expense.id !== expenseToDelete.id
+        );
+        dispatch(expenseActions.setExpenses(updatedExpense));
+        dispatch(expenseActions.setExpenseToDelete(null));
+        dispatch(expenseActions.setShowDeleteModal(false));
         return res.json();
       }
     });
-    dispatch(expenseActions.setExpenseToDelete(null));
-    dispatch(expenseActions.setShowDeleteModal(false));
-    
+
     fetchExpenseHandler();
   };
 
   const handleEditInputChange = (event) => {
     const { name, value } = event.target;
-    const updatedExpenseToEdit={
+    const updatedExpenseToEdit = {
       ...expenseToEdit,
-      [name]:value,
-    }
-    dispatch(expenseActions.setExpenseToEdit(updatedExpenseToEdit))
+      [name]: value,
+    };
+    dispatch(expenseActions.setExpenseToEdit(updatedExpenseToEdit));
   };
 
   const handleEditExpense = (event) => {
@@ -110,7 +112,12 @@ const Expenses = () => {
           draggable: true,
           progress: undefined,
         });
-        return res.json();
+        const updatedExpenses = expenses.map((expense) =>
+          expense.id === updatedExpense.id ? updatedExpense : expense
+        ); // Update the state
+        dispatch(expenseActions.setExpenses(updatedExpenses));
+        dispatch(expenseActions.setExpenseToEdit(null));
+        dispatch(expenseActions.setShowEditModal(false));
       } else {
         res.json().then((data) => {
           toast.error("Failed to update expense", {
@@ -124,10 +131,11 @@ const Expenses = () => {
           });
         });
       }
-    });
-    dispatch(expenseActions.setExpenseToEdit(null));
-    dispatch(expenseActions.setShowEditModal(false));
-    fetchExpenseHandler();
+    }).catch((error)=>{
+      console.log(error)
+    })
+
+   
   };
 
   const fetchExpenseHandler = useCallback(() => {
@@ -174,8 +182,8 @@ const Expenses = () => {
           loadedAmount = loadedAmount + parseInt(data[key].amount);
         }
         dispatch(expenseActions.setExpenses(fetchedExpenses));
-    dispatch(expenseActions.setTotalAmount(loadedAmount));
-      });
+        dispatch(expenseActions.setTotalAmount(loadedAmount));
+      })
   }, []);
 
   return (
@@ -330,7 +338,7 @@ const Expenses = () => {
               >
                 <GiCancel />
               </Button>
-              <Button type="submit"  className={stylesheet["modal-cancel"]}>
+              <Button type="submit" className={stylesheet["modal-cancel"]}>
                 <BsSave />
               </Button>
             </Modal.Footer>
