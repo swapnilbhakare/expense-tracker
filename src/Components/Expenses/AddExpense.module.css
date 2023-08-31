@@ -67,3 +67,29 @@
     color: #000 !important;
     
 }
+.add-expense-dark{
+    background-color: #000;
+    box-shadow: rgb(255, 255, 255) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
+    margin: 80px auto 0 !important;
+    box-sizing: border-box !important;
+    padding: 5px 20px !important;
+    border-radius: 4px !important;
+
+}
+.add-expense-dark .form-controls{
+    color: #fff;
+    background-color: #000;
+    outline: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 2px solid turquoise !important;
+    margin-top: 5px;
+    padding: 5px 0 ;
+}
+.add-expense-dark .form-controls::placeholder{
+    background-color: #000;
+    color: #fff;
+}
+.add-expense-dark .btn{
+    color: #fff !important;
+}

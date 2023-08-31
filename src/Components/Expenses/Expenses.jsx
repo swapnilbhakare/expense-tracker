@@ -61,13 +61,16 @@ const Expenses = () => {
           draggable: true,
           progress: undefined,
         });
+        
         const updatedExpense = expenses.filter(
-          (expense) => expense.id !== expenseToDelete.id
+          (expense) =>
+            expense.id !== expenseToDelete.id
+           
         );
         dispatch(expenseActions.setExpenses(updatedExpense));
         dispatch(expenseActions.setExpenseToDelete(null));
         dispatch(expenseActions.setShowDeleteModal(false));
-        return res.json();
+     
       }
     });
 
@@ -186,6 +189,18 @@ const Expenses = () => {
       })
   }, []);
 
+
+  useEffect(() => {
+    const csv = expenses.reduce((csvString, expense) => {
+      return `${csvString} ${expense.currency}, ${expense.amount},${expense.description},${expense.category}\n`;
+    }, "Title,Amount,Description,Category\n");
+    const totalAmount = expenses.reduce((total, expense) => {
+      return total + parseInt(expense.amount);
+    }, 0);
+    setCsvData(`${csv}Total,${totalAmount},\n`);
+    //setCsvData(csv);
+  }, [expenses]);
+
   return (
     <>
       <Container className={stylesheet.expenses}>
@@ -230,7 +245,17 @@ const Expenses = () => {
             </ListGroup.Item>
           ))}
         </ListGroup>
-
+       <div className={stylesheet['total-expenses']}>
+       <h5>Total: {totalAmount}</h5>
+<Button
+      className={stylesheet.downloadbtn}
+        href={`data:text/csv;charset=utf-8,${encodeURIComponent(csvData)}`}
+        download="expenses.csv"
+        style={{ marginLeft: "45%" }}
+      >
+        Download Expenses
+      </Button>
+        </div>
         {/* Delete Modal */}
         <Modal
           show={showDeleteModal}

@@ -3,7 +3,7 @@ import stylesheet from "./AddExpense.module.css";
 import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { expenseActions } from "../../Store/expensesSlice";
-const AddExpense = () => {
+const AddExpense = ({premiumThem}) => {
   const currencyInputRef = useRef();
   const amountInputRef = useRef();
   const descriptionInputRef = useRef();
@@ -19,6 +19,9 @@ const AddExpense = () => {
   const userEmail = useSelector((state) => state.authentication.userId);
   const emailId = userEmail;
   const email = emailId.replace(/[^a-zA-Z0-9]/g, "");
+
+
+  
 
   const currencyInputChangeHandler = (e) => {
     setCurrency(currencyInputRef.current.value);
@@ -81,7 +84,7 @@ const AddExpense = () => {
     })
     fetchExpenseHandler()
   };
-  const fetchExpenseHandler = useCallback(() => {
+  const fetchExpenseHandler = () => {
     fetch(
       `https://expenses-tracker-8f78a-default-rtdb.firebaseio.com/expenses${email}.json`
     ).then(res=>{
@@ -112,17 +115,18 @@ const AddExpense = () => {
       dispatch(expenseActions.setTotalAmount(loadedAmount));
     })
    
-  },[addExpenseHandler]);
+  }
   useEffect(()=>{
     fetchExpenseHandler()
   },[fetchExpenseHandler])
 
   return (
     <>
+    
       <Container
         breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
         minbreakpoint="xxs"
-        className={stylesheet["add-expense"]}
+        className={premiumThem?stylesheet["add-expense-dark"]:stylesheet["add-expense"]}
       >
         <h5 className={stylesheet.title}>Add New Expense</h5>
         <Form onSubmit={submitHandler}>
