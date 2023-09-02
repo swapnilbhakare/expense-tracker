@@ -4,12 +4,11 @@ import styleSheet from "./Verification.module.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 
-const Verification = (props) => {
+const Verification = () => {
   const navigate = useNavigate();
   const emailInputRef = useRef();
-  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

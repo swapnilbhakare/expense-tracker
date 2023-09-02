@@ -14,7 +14,7 @@ function App() {
 
 
   return (
-    <div className={isDarkTheme? stylesheet['dark']:""}>
+    <div className={isDarkTheme && isLoggedIn? stylesheet['dark']:""}>
       <Routes>
         <Route path="/" element={<Authentication />} />
        
