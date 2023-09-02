@@ -26,8 +26,10 @@ const Authentication = (props) => {
    
 
     let url;
+
     if (!isLogin && enterdPassword !== enterdConfirmPassword) {
-      console.log(enterdPassword,enterdConfirmPassword)
+   
+    
       toast.error("Passwords did not match", {
         position: "top-right",
         autoClose: 2000,
@@ -141,6 +143,7 @@ const Authentication = (props) => {
         const userId = data.email;
         dispatch(login({ idToken, userId }));
           if(isLogin){
+          
             toast.success("User has successfully signed in", {
               position: "top-right",
               autoClose: 2000,
@@ -179,7 +182,16 @@ const Authentication = (props) => {
        
       })
       .catch((err) => {
-        alert(err.message);
+      
+        toast.error("Please Enter correct email password", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
       });
   };
   const forgetPasswordHandler=()=>{

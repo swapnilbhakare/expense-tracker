@@ -16,6 +16,8 @@
   
 
 }
+
+
 .updateBtn{
     display: flex;
     align-items: center;
@@ -41,7 +43,7 @@
 }
 .updateBtn button:hover{
     background-color: transparent;
-    color: #000;
+   
     border: 1px solid turquoise;
 }
 .cancelbtn{
@@ -53,3 +55,14 @@
     border-radius: 9px;
     cursor: pointer;
 }
+
+
+.profile-dark{
+    box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
+    margin: 20px auto;
+    padding: 20px 5px ;
+    background-color: #000;
+    color: #fff !important;
+    padding-bottom: 10px  !important;
+    
+} 

@@ -2,8 +2,9 @@
     background-color: white;
 }
 .dark-them{
-    background-color: #000 !important; 
+    background-color: rgb(44, 43, 43) !important; 
     color: #fff !important;
+    padding-bottom: 10px ;
 }
 .active-premium{
     margin-left: 80%;

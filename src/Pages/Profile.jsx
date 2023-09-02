@@ -7,7 +7,11 @@ import { AiOutlineGithub, AiOutlineGlobal } from "react-icons/ai";
 import { useSelector } from "react-redux";
 const Profile = (props) => {
   const idToken = useSelector((state)=>state.authentication.idToken)
+  const isDarkTheme = useSelector((state) => state.theme.isDarkTheme);
 
+  // const isDarkThemeActivate = useSelector(
+  //   (state) => state.theme.isDarkThemeActivate
+  // );
   const fullNameInputRef = useRef();
   const profileUrlRef = useRef();
 
@@ -104,9 +108,10 @@ const Profile = (props) => {
   };
 
   return (
+  
     <>
       <Header />
-      <Container className={stylesheet.profileContainer}>
+      <Container className={isDarkTheme?stylesheet['profile-dark']:stylesheet['profileContainer']}>
         <header style={{ marginBottom: "15px",display:'flex',justifyContent:"space-between" }}>
           Update Details
           <Button onClick={cancelHandler} className={stylesheet.cancelbtn}>Cancel</Button>

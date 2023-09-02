@@ -1,9 +1,13 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import stylesheet from "./AddExpense.module.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { expenseActions } from "../../Store/expensesSlice";
-const AddExpense = ({premiumThem}) => {
+
+
+const AddExpense = () => {
   const currencyInputRef = useRef();
   const amountInputRef = useRef();
   const descriptionInputRef = useRef();
@@ -19,6 +23,8 @@ const AddExpense = ({premiumThem}) => {
   const userEmail = useSelector((state) => state.authentication.userId);
   const emailId = userEmail;
   const email = emailId.replace(/[^a-zA-Z0-9]/g, "");
+
+  const isDarkTheme = useSelector((state) => state.theme.isDarkTheme);
 
 
   
@@ -39,6 +45,61 @@ const AddExpense = ({premiumThem}) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    if(!currency ){
+      toast.error("Please select currency", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+      return
+    }
+   
+    if(!amount || isNaN(amount)){
+      toast.error("Please Enter Amount", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+      return
+
+    }
+    if(!description){
+      toast.error("Please Description", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+      return
+
+    }
+    if(!category){
+      toast.error("Please Select a category.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+      return
+
+    }
+
+
+
     const expenseData = {
       currency: currency,
       amount: amount,
@@ -74,11 +135,29 @@ const AddExpense = ({premiumThem}) => {
       }
     ).then((res) => {
       if (res.ok) {
-        console.log("successful");
+        toast.success("Expense added sucessfully!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
+        
         return res.json();
       } else {
         return res.json().then((data) => {
-          alert("Something went Wrong");
+          toast.error("Something went wrong..!", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+          });
+       
         });
       }
     })
@@ -89,11 +168,21 @@ const AddExpense = ({premiumThem}) => {
       `https://expenses-tracker-8f78a-default-rtdb.firebaseio.com/expenses${email}.json`
     ).then(res=>{
       if (res.ok) {
-        console.log("successful");
+    
         return res.json();
       }else {
         return res.json().then((data) => {
-          alert("Something went Wrong");
+          toast.error("Something went Wrong", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+          });
+        
+         
         });
       }
 
@@ -126,7 +215,7 @@ const AddExpense = ({premiumThem}) => {
       <Container
         breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
         minbreakpoint="xxs"
-        className={premiumThem?stylesheet["add-expense-dark"]:stylesheet["add-expense"]}
+        className={isDarkTheme?stylesheet["add-expense-dark"]:stylesheet["add-expense"]}
       >
         <h5 className={stylesheet.title}>Add New Expense</h5>
         <Form onSubmit={submitHandler}>
@@ -139,7 +228,7 @@ const AddExpense = ({premiumThem}) => {
             }}
           >
             <Form.Label className={stylesheet["form-label"]}>
-              Amount:{" "}
+              Amount:
             </Form.Label>
             <div
               style={{
@@ -153,6 +242,7 @@ const AddExpense = ({premiumThem}) => {
                 aria-label="expensecurrency"
                 ref={currencyInputRef}
                 value={currency}
+                required
                 onChange={currencyInputChangeHandler}
               >
                 <option value={null}>Select currency </option>
@@ -161,6 +251,7 @@ const AddExpense = ({premiumThem}) => {
                 <option value="€">€</option>€
               </Form.Select>
               <Form.Control
+              required
                 style={{ width: "100%" }}
                 type="number"
                 placeholder="Enter the Amount "
@@ -176,6 +267,7 @@ const AddExpense = ({premiumThem}) => {
               Description:{" "}
             </Form.Label>
             <Form.Control
+            required
               type="text"
               placeholder="Enter Description "
               ref={descriptionInputRef}
@@ -189,6 +281,7 @@ const AddExpense = ({premiumThem}) => {
               Category:{" "}
             </Form.Label>
             <Form.Select
+            required
               aria-label="expenseCategroy"
               ref={categroyInputRef}
               value={category}
@@ -200,6 +293,7 @@ const AddExpense = ({premiumThem}) => {
               <option value="petrol">Petrol </option>
               <option value="food">Food</option>
               <option value="grocery">Grocery</option>
+              <option value="other">Other</option>
             </Form.Select>
           </Form.Group>
           <Form.Group style={{ textAlign: "center" }}>

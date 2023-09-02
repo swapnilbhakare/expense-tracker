@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "../Components/Layout/Header";
 import AddExpense from "../Components/Expenses/AddExpense";
 import Expenses from "../Components/Expenses/Expenses";
-import { Container, Button } from "react-bootstrap";
+import {  Button } from "react-bootstrap";
 import {
   enableDarkThem,
   enableLightThem,
@@ -14,13 +14,13 @@ import stylesheet from "./Home.module.css";
 const Home = (props) => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.authentication.isLoggedIn);
-  const totalAmount = useSelector((state) => state.expenses);
+   const totalAmount = useSelector((state) => state.expense.totalAmount);
   const isDarkTheme = useSelector((state) => state.theme.isDarkTheme);
 
   const isDarkThemeActivate = useSelector(
     (state) => state.theme.isDarkThemeActivate
   );
-  console.log(totalAmount);
+ 
   const toogleThem = () => {
     if (isDarkTheme) {
       dispatch(enableLightThem());
@@ -37,19 +37,25 @@ const Home = (props) => {
       isLoggedIn
     ) {
       dispatch(toogleDarkThemActivate());
+    }else{
+
     }
   };
   const premiumThem = isDarkTheme ? stylesheet["dark-them"] : ""
   return (
-    <Container fluid className={premiumThem}>
-      <Header />
-      <Button className={stylesheet["active-premium"]} onClick={toogleThem}>
+    <div  className={premiumThem}>
+      <Header  />
+     {
+      totalAmount >=10000 && isLoggedIn? (
+        <Button className={stylesheet["active-premium"]} onClick={toogleThem}>
         Active Premium
       </Button>
+      ):""
+     }
 
-      <AddExpense onAddExpense={addExpensesHandler} premiumThem={premiumThem} />
+      <AddExpense onAddExpense={addExpensesHandler}  />
       <Expenses  />
-    </Container>
+    </div>
   );
 };
 

@@ -53,7 +53,7 @@ const Verification = (props) => {
         return res.json().then((data) => {
           if (isEmailVerified && data.email === enterdEmail) {
             navigate("/home");
-            console.log(data);
+            
           }
 
           if (data.error && data.error.message) {
