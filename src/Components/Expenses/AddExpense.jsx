@@ -282,7 +282,7 @@ const AddExpense = () => {
           </Form.Group>
           <Form.Group className={stylesheet["form-group"]}>
             <Form.Label htmlFor="category" className={stylesheet["form-label"]}>
-            Please Select a category:{" "}
+            Please Select a category:
             </Form.Label>
             <Form.Select
             id="category"

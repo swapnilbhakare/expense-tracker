@@ -93,9 +93,9 @@ describe('AddExpense Component', () => {
   test('add button is enabled when all fields are filled', () => {
 
     render(
-        <Provider store={store}>
+        
             <AddExpense />
-        </Provider>
+       
     );
 
     const currencyInput = screen.getByLabelText(/Amount:/i);
