@@ -14,7 +14,8 @@ function App() {
 
 
   return (
-    <div className={isDarkTheme && isLoggedIn? stylesheet['dark']:""}>
+    <div   breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
+    minbreakpoint="xxs" className={isDarkTheme && isLoggedIn? stylesheet['dark']:""}>
       <Routes>
         <Route path="/" element={<Authentication />} />
        

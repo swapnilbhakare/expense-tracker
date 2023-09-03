@@ -21,7 +21,7 @@ const AddExpense = () => {
   const dispatch = useDispatch();
 
   const userEmail = useSelector((state) => state.authentication.userId);
-  const emailId = userEmail;
+  const emailId = userEmail || "";
   const email = emailId.replace(/[^a-zA-Z0-9]/g, "");
 
   const isDarkTheme = useSelector((state) => state.theme.isDarkTheme);
@@ -227,7 +227,7 @@ const AddExpense = () => {
               alignItems: "center",
             }}
           >
-            <Form.Label className={stylesheet["form-label"]}>
+            <Form.Label htmlFor="amount" className={stylesheet["form-label"]}>
               Amount:
             </Form.Label>
             <div
@@ -240,34 +240,38 @@ const AddExpense = () => {
               <Form.Select
                 className={stylesheet["form-controls"]}
                 aria-label="expensecurrency"
+                id="amount"
                 ref={currencyInputRef}
                 value={currency}
                 required
                 onChange={currencyInputChangeHandler}
               >
-                <option value={null}>Select currency </option>
+                <option value="">Select currency </option>
                 <option value="$">$</option>
                 <option value="₹">₹</option>
                 <option value="€">€</option>€
               </Form.Select>
               <Form.Control
               required
+              id="amount"
                 style={{ width: "100%" }}
                 type="number"
                 placeholder="Enter the Amount "
                 ref={amountInputRef}
                 value={amount}
+                
                 onChange={amountInputChangeHandler}
                 className={stylesheet["form-controls"]}
               />
             </div>
           </Form.Group>
           <Form.Group className={stylesheet["form-group"]}>
-            <Form.Label className={stylesheet["form-label"]}>
-              Description:{" "}
+            <Form.Label htmlFor="description" className={stylesheet["form-label"]}>
+            Please Description:{" "}
             </Form.Label>
             <Form.Control
             required
+            id="description"
               type="text"
               placeholder="Enter Description "
               ref={descriptionInputRef}
@@ -277,18 +281,20 @@ const AddExpense = () => {
             />
           </Form.Group>
           <Form.Group className={stylesheet["form-group"]}>
-            <Form.Label className={stylesheet["form-label"]}>
-              Category:{" "}
+            <Form.Label htmlFor="category" className={stylesheet["form-label"]}>
+            Please Select a category:{" "}
             </Form.Label>
             <Form.Select
+            id="category"
             required
               aria-label="expenseCategroy"
               ref={categroyInputRef}
               value={category}
+
               onChange={categroyInputChangeHandler}
               className={stylesheet["form-controls"]}
             >
-              <option value={null}>Select Where You Spend </option>
+              <option value="">Select Where You Spend </option>
               <option value="car servicing">Car servicing </option>
               <option value="petrol">Petrol </option>
               <option value="food">Food</option>
@@ -297,7 +303,7 @@ const AddExpense = () => {
             </Form.Select>
           </Form.Group>
           <Form.Group style={{ textAlign: "center" }}>
-            <Button className={stylesheet.btn} type="submit">
+            <Button className={stylesheet.btn} type="submit" disabled={!currency|| !amount || !description ||!category}>
               Add
             </Button>
           </Form.Group>

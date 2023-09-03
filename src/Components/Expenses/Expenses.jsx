@@ -217,7 +217,8 @@ const Expenses = () => {
           isDarkTheme ? stylesheet["expenses-dark"] : stylesheet["expenses"]
         }
       >
-        <ListGroup as="ul" className={stylesheet.ul}>
+        <ListGroup as="ul" className={stylesheet.ul} breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
+        minbreakpoint="xxs">
           <ListGroup.Item
             style={{ textAlign: "justify" }}
             className={stylesheet.list}

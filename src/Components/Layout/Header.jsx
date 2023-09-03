@@ -23,14 +23,16 @@ const auth = useSelector((state)=>state.authentication)
       <Navbar  className={isDarkTheme?stylesheet["navbar-dark"]:stylesheet["navbar"]}
        breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
         minbreakpoint="xxs">
-        <div>
+        <div  breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
+        minbreakpoint="xxs">
           <Nav >
             <Nav.Item style={{ color: "turquoise", fontSize: "25px" }}>
               Expense Tracker
             </Nav.Item>
           </Nav>
         </div>
-        <div>
+        <div  breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
+        minbreakpoint="xxs">
           {location.pathname !== "/profile" && (
             <span>
               Your Profile is Incomplete
@@ -40,7 +42,8 @@ const auth = useSelector((state)=>state.authentication)
             </span>
           )}
         </div  >
-        <div>
+        <div  breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
+        minbreakpoint="xxs">
           {auth.isLoggedIn && location.pathname !== "/auth" && (
           <Button className={stylesheet.logoutBtn} onClick={logoutHandler}>
             <BiLogOut className={stylesheet["logout-icon"]} />
