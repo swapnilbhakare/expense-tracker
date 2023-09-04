@@ -240,6 +240,7 @@ const AddExpense = () => {
               <Form.Select
                 className={stylesheet["form-controls"]}
                 aria-label="expensecurrency"
+                data-testid="category-select"
                 id="amount"
                 ref={currencyInputRef}
                 value={currency}
@@ -290,7 +291,7 @@ const AddExpense = () => {
               aria-label="expenseCategroy"
               ref={categroyInputRef}
               value={category}
-
+              data-testid="category-select"
               onChange={categroyInputChangeHandler}
               className={stylesheet["form-controls"]}
             >
